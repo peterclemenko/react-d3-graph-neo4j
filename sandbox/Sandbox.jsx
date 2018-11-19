@@ -47,7 +47,8 @@ export default class Sandbox extends React.Component {
             generatedConfig: {},
             schema,
             data,
-            fullscreen
+            fullscreen,
+            randomLinkHighlighted: false
         };
     }
 
@@ -243,6 +244,16 @@ export default class Sandbox extends React.Component {
      */
     onGraphDataUpdate = data => this.setState({ data });
 
+    highlighRandomLink = () => {
+        const source = 'Androsynth';
+        const target = 'Chenjesu';
+
+        this.state.randomLinkHighlighted
+            ? this.refs.graph.onMouseOverLink(source, target)
+            : this.refs.graph.onMouseOutLink(source, target);
+        this.setState({ randomLinkHighlighted: !this.state.randomLinkHighlighted });
+    };
+
     /**
      * Build common piece of the interface that contains some interactions such as
      * fullscreen, play/pause, + and - buttons.
@@ -294,6 +305,9 @@ export default class Sandbox extends React.Component {
                 </button>
                 <button onClick={this.onClickRemoveNode} className="btn btn-default btn-margin-left">
                     -
+                </button>
+                <button onClick={this.highlighRandomLink} className="btn btn-default btn-margin-left">
+                    Highlight link!
                 </button>
                 <span className="container__graph-info">
                     <b>Nodes: </b> {this.state.data.nodes.length} | <b>Links: </b> {this.state.data.links.length}
